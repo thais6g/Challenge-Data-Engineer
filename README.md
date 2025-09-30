@@ -27,7 +27,7 @@ Golde - Dado agregado
 
 3 - Estrtutura do programa
 
-![alt text](image.png)
+![alt text](img_estruturaprg.png)
 
 4 - Como executar o programa
 
