@@ -1,0 +1,43 @@
+# Ambientes virtuais
+venv/
+ENV/
+env/
+*.pyc
+__pycache__/
+
+# Arquivos de log
+*.log
+
+# Configurações locais
+*.env
+.env.*
+
+# Diretórios de build
+build/
+dist/
+*.egg-info/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Testes
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Banco de dados SQLite
+*.sqlite3
+*.db
+
+#Ignorar pasta de dados para não estourar o limite do git
+data/

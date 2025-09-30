@@ -1,0 +1,6 @@
+pandas==2.2.2
+requests==2.31.0
+delta-spark==2.4.0
+pyspark==3.4.1
+psycopg2-binary
+tqdm

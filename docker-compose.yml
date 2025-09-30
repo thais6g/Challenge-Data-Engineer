@@ -1,0 +1,39 @@
+services:
+  pyspark-test:
+    image: challenge-data-engineer:latest
+    container_name: challenge-receita-federal
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: >
+      bash -c 'spark-submit --packages io.delta:delta-core_2.12:2.4.0,org.postgresql:postgresql:42.7.3  --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension --conf spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog src/main.py'
+
+      # Variáveis de ambiente para o PySpark se conectar ao PostgreSQL
+    environment:
+      POSTGRES_HOST: postgres_db 
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: recfederal_db
+      
+    # Garante que o PostgreSQL inicie primeiro
+    depends_on:
+      - postgres_db
+
+  # 2. Serviço de Banco de Dados (PostgreSQL)
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_db
+    # Configuração de credenciais
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: recfederal_db
+    # Mapeamento de porta (opcional, mas útil para verificar o DB localmente)
+    ports:
+      - "5432:5432"
+    # Volume para persistência dos dados do PostgreSQL
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
