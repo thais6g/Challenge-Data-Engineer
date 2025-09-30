@@ -72,23 +72,23 @@ Banco de Dados: PostgreSQL.
 6 - Evidência do processamento
 
 Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.
-![alt text](image.png)
+![alt text](img_iniciodesafio.png)
 
 Amostragem - Socios Raw
-![alt text](image.png)
+![alt text](img_amost_sociosraw.png)
 
 Amostragem - Empresas Raw
-![alt text](image.png)
+![alt text](img_amost_empraw.png)
 
 Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.
-![alt text](image.png)
+![alt text](img_silver.png)
 
 Camada gold - entrega analítica, com visão final do negócio
-![alt text](image.png)
+![alt text](img_gold.png)
 
 Exemplo de análises - Gold
-![alt text](image.png)
+![alt text](img_exanl1.png)
 
-![alt text](image.png)
+![alt text](img_exanl2.png)
 
 
