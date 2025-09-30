@@ -23,27 +23,27 @@ def show_deltagold():
 
     base_path = "data/gold/final_result"
 
-    print(f"\n🔍 Lendo tabela Delta: final_result")
+    print(f"\nLendo tabela Delta: final_result")
     try:
         df = spark.read.format("delta").load(base_path)
-        print(f"✅ Tabela 'final_result' lida com sucesso. Total de registros: {df.count()}")
+        print(f"Tabela 'final_result' lida com sucesso. Total de registros: {df.count()}")
         df.printSchema()
         df.show(5, truncate=False)
 
-        # 👥 Visão 1: Empresas com pelo menos um sócio
-        print("\n👥 Visão: Empresas com pelo menos um sócio")
+        #  Visão 1: Empresas com pelo menos um sócio
+        print("\nVisão: Empresas com pelo menos um sócio")
         df_com_socios = df.filter(col("qtde_socios") > 0)
         print(f"Total com sócios: {df_com_socios.count()}")
         df_com_socios.show(5, truncate=False)
 
-        # 🌍 Visão 2: Empresas com sócio estrangeiro
-        print("\n🌍 Visão: Empresas com sócio estrangeiro")
+        #  Visão 2: Empresas com sócio estrangeiro
+        print("\n Visão: Empresas com sócio estrangeiro")
         df_estrangeiro = df.filter(col("flag_socio_estrangeiro") == True)
         print(f"Total com sócio estrangeiro: {df_estrangeiro.count()}")
         df_estrangeiro.show(5, truncate=False)
 
-        # 📌 Visão 3: Empresas marcadas como documento alvo
-        print("\n📌 Visão: Empresas marcadas como documento alvo")
+        #  Visão 3: Empresas marcadas como documento alvo
+        print("\n Visão: Empresas marcadas como documento alvo")
         df_doc_alvo = df.filter(col("doc_alvo") == True)
         print(f"Total marcadas como doc_alvo: {df_doc_alvo.count()}")
         df_doc_alvo.show(5, truncate=False)
@@ -51,7 +51,7 @@ def show_deltagold():
 
 
     except Exception as e:
-        print(f"❌ Erro ao ler ou processar tabela 'final_result': {e}")
+        print(f"Erro ao ler ou processar tabela 'final_result': {e}")
 
 if __name__ == "__main__":
     show_deltagold()

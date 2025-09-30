@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count, when, lit
 import os
@@ -35,9 +34,9 @@ def builder_gold(origem="data/silver", destino="data/gold"):
         # 1. Leitura das Tabelas da Camada Silver
         df_empresas = spark.read.format("delta").load(os.path.join(origem, "Empresas"))
         df_socios = spark.read.format("delta").load(os.path.join(origem, "Socios"))
-        print("✅ Tabelas EMPRESAS e SOCIOS lidas da camada Silver.")
+        print("Tabelas EMPRESAS e SOCIOS lidas da camada Silver.")
     except Exception as e:
-        print(f"🛑 Erro ao ler tabelas Silver: {e}")
+        print(f"Erro ao ler tabelas Silver: {e}")
         return
 
     try:
@@ -61,18 +60,18 @@ def builder_gold(origem="data/silver", destino="data/gold"):
             col("flag_socio_estrangeiro").cast("boolean"),
             col("doc_alvo").cast("boolean")
         )
-        print("✅ Tabela GOLD construída com sucesso.")
+        print("Tabela GOLD construída com sucesso.")
     except Exception as e:
-        print(f"🛑 Erro ao construir tabela GOLD: {e}")
+        print(f"Erro ao construir tabela GOLD: {e}")
         return
 
     try:
         # 6. Escrita na Camada Gold
         output_path = os.path.join(destino, "final_result")
         df_gold.write.format("delta").mode("overwrite").save(output_path)
-        print(f"✅ Tabela salva com sucesso na GOLD em: {output_path}")
+        print(f"Tabela salva com sucesso na GOLD em: {output_path}")
     except Exception as e:
-        print(f"🛑 Erro ao salvar tabela GOLD: {e}")
+        print(f"Erro ao salvar tabela GOLD: {e}")
 
 if __name__ == "__main__":
     builder_gold()

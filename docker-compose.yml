@@ -1,6 +1,7 @@
 services:
   pyspark-test:
-    image: challenge-data-engineer:latest
+    #image: challenge-data-engineer:latest
+    build: .
     container_name: challenge-receita-federal
     working_dir: /app
     volumes:

@@ -60,7 +60,7 @@ def get_spark_session():
         spark = builder.getOrCreate()
         spark.sparkContext.setLogLevel("ERROR") #Redução dos logs em tela apenas para os logs de ERROR
                
-        print("✅ SparkSession inicializada com suporte ao Delta Lake.")
+        print("SparkSession inicializada com suporte ao Delta Lake.")
     return spark
 
 
@@ -74,7 +74,7 @@ def load_raw(origem="data/bronze/extraction", destino="data/raw"):
     arquivos = [f for f in os.listdir(origem) if f.endswith(('.CSV', '.SOCIOCSV', '.EMPRECSV'))]
     
     if not arquivos:
-        print(f"⚠️ Aviso: Nenhum arquivo encontrado na origem {origem}. Verifique a Etapa 1.")
+        print(f"Aviso: Nenhum arquivo encontrado na origem {origem}. Verifique a Etapa 1.")
         return
 
     for arquivo in arquivos:
@@ -109,10 +109,10 @@ def load_raw(origem="data/bronze/extraction", destino="data/raw"):
 
             # Salva o DataFrame como tabela Delta
             df.write.format("delta").mode("overwrite").save(caminho_delta)
-            print(f"✅ Tabela '{nome_tabela}' salva em Delta em: {caminho_delta}")
+            print(f"Tabela '{nome_tabela}' salva em Delta em: {caminho_delta}")
 
         except Exception as e:
-            print(f"🛑 ERRO ao processar {arquivo} para Delta: {e}")
+            print(f"ERRO ao processar {arquivo} para Delta: {e}")
             
 # Se for executado diretamente, inicializa o Spark e tenta rodar (útil para testes)
 if __name__ == "__main__":

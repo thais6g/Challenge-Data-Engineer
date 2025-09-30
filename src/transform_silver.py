@@ -32,9 +32,6 @@ def transform_silver(origem="data/raw", destino="data/silver"):
     os.makedirs(destino, exist_ok=True)
     print("\n--- Iniciando transformação para camada Silver ---")
 
-    #Limpeza de diretório
-    if os.path.exists(destino):
-        shutil.rmtree(destino)
 
     try:
         #Criação das tabelas na camada silver respeitando o schema solicitado
@@ -47,7 +44,7 @@ def transform_silver(origem="data/raw", destino="data/silver"):
             regexp_replace('CAPITAL_SOCIAL_DA_EMPRESA', ',', '.').cast('double').alias('capital_social'),
             col('PORTE_DA_EMPRESA').alias('cod_porte')
         ).write.format("delta").mode("overwrite").save(os.path.join(destino, "Empresas"))
-        print("✅ Tabela EMPRESAS salva como Delta na camada Silver.")
+        print("Tabela EMPRESAS salva como Delta na camada Silver.")
     except Exception as e:
         print(f"Erro ao transformar EMPRESAS: {e}")
 
@@ -60,7 +57,7 @@ def transform_silver(origem="data/raw", destino="data/silver"):
             col('CNPJ_CPF_DO_SOCIO').alias('documento_socio'),
             col('QUALIFICACAO_DO_SOCIO').alias('codigo_qualificacao_socio')
         ).write.format("delta").mode("overwrite").save(os.path.join(destino, "Socios"))
-        print("✅ Tabela SOCIOS salva como Delta na camada silver.")
+        print("Tabela SOCIOS salva como Delta na camada silver.")
     except Exception as e:
         print(f"Erro ao transformar SOCIOS: {e}")
 

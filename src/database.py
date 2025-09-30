@@ -55,12 +55,12 @@ def load_postgres(input_path="data/gold/final_result", table_name="final_result"
              .mode("overwrite") \
              .save()
 
-        print(f"✅ Tabela '{table_name}' carregada com sucesso no PostgreSQL!")
+        print(f"Tabela '{table_name}' carregada com sucesso no PostgreSQL!")
 
     except AnalysisException as e:
-        print(f"🛑 ERRO DE ANÁLISE: Falha ao ler tabela Delta Gold. Erro: {e}")
+        print(f"ERRO DE ANÁLISE: Falha ao ler tabela Delta Gold. Erro: {e}")
     except Exception as e:
-        print(f"🛑 ERRO NA EXPORTAÇÃO (PostgreSQL): Falha ao conectar ou escrever. Erro: {e}")
+        print(f"ERRO NA EXPORTAÇÃO (PostgreSQL): Falha ao conectar ou escrever. Erro: {e}")
 
 if __name__ == "__main__":
      load_postgres()

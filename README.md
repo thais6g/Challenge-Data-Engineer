@@ -1,70 +1,115 @@
-challenge_data_engineer/
-├── main.py                     # Script principal que orquestra o pipeline
-├── src/                        # Módulos de processamento
-│   ├── __init__.py             # Torna 'src' um pacote Python
-│   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal
-│   ├── raw_loader.py           # Lê os arquivos extraídos e salva como Delta (camada Raw)
-│   ├── silver_transformer.py   # Aplica transformações e salva como Delta (camada Silver)
-│   ├── gold_builder.py         # Une tabelas e gera campos derivados (camada Gold)
-│   ├── database.py             # Carrega a tabela Gold no banco PostgreSQL
-├── data/                       # Diretório de dados
-│   ├── raw/
-│   │   ├── zip/                # Arquivos ZIP originais
-│   │   └── extraction/         # Arquivos CSV extraídos
-│   ├── silver/                 # Dados transformados (Silver)
-│   └── gold/                   # Dados finais (Gold)
-├── jars/                       # Driver JDBC do PostgreSQL (.jar)
-│   └── postgresql-42.7.1.jar
-├── requirements.txt            # Dependências Python
-├── Dockerfile                  # Define o ambiente do Spark
-└── docker-compose.yml          # Orquestra os serviços Spark e PostgreSQL
+Desafio - Receita Federal do Brasil
 
-⚙️ Etapas do Pipeline
-1. ingestion_receitafederal.py
-- Realiza o download dos arquivos da Receita Federal.
-- Extrai os arquivos ZIP para data/raw/extraction.
-2. raw_loader.py
-- Lê os arquivos CSV extraídos.
-- Aplica os esquemas definidos para SOCIOS e EMPRESAS.
-- Salva os dados como tabelas Delta em data/raw.
-3. silver_transformer.py
-- Lê os dados da camada Raw.
-- Aplica transformações e renomeia colunas.
-- Salva os dados como tabelas Delta em data/silver.
-4. gold_builder.py
-- Une as tabelas EMPRESAS e SOCIOS.
-- Cria os campos derivados:
-- qtde_socios
-- flag_socio_estrangeiro
-- doc_alvo
-- Salva a tabela final em data/gold.
-5. database.py
-- Lê a tabela Gold.
-- Conecta ao PostgreSQL via JDBC.
-- Salva os dados na tabela empresas_socios_gold.
+1 - Objetivo
+O objetivo deste desafio é ingerir , via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requsitos das áreas de negócio.
 
-🚀 Como Executar
-1. Instale o driver JDBC
-- Baixe o arquivo .jar do site jdbc.postgresql.org
-- Coloque em jars/postgresql-42.7.1.jar
-2. Construa e execute com Docker Compose
-docker-compose up --build
+2 - Arquitetura de dados
+Este projeto foi construído considerando a arquitetura medalhão, de forma que seja possível garantir performance, qualidade e governança dos dados processados. Após a ingestão dos dados disponibilizados, os mesmos foram salvo em formato Delta lake a fim de garantir atomicidade na escrita e eliminação de dados corrompidos ou inconsistentes (garantia ACID), integridade, possibilidade de 'viagem no tempo' ,permitido com histórico de versão dos dados, além de melhorar a performance e permitir indexação.
+
+Segue a relação da estrutura de camadas utilizadas neste projeto:
+
+Dados brutos - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
+
+Bronze - Arquivo bruto, mesmo formato do endpoint
+{data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal
+{data/bronze/extraction}: Extração do conteúdo dos arquivos ZIP
+
+Raw - Dado bruto. Estrutura definida e formato otimizado 
+{data/raw}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/bronze/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
+
+Dados refinados - Camada responsável por entregar objetos de dados de acordo com os requisitos solicitados pelo solicitante.
+
+Silver - Dado refinado para atender o objetivo do projeto
+{data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
+
+Golde - Dado agregado
+{data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica e que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
+
+3 - Estrtutura do programa
+
+Challenge-Data-Engineer/
+├── data/                                 # Camadas do Data Lake (Ignorado pelo .gitignore)
+│   ├── bronze/                           # Dados brutos após extração (sem limpeza)
+│   ├── raw/                              # Arquivos CSV brutos (Origem)
+│   ├── silver/                           # Dados limpos e padronizados
+│   └── gold/                             # Dados agregados e prontos para análise
+├── src/                                  # Código-fonte e módulos de processamento
+│   ├── __init__.py                       # Inicializa 'src' como um pacote Python
+│   ├── agg_gold.py                       # Agregações e criação da tabela final (Camada Gold)
+│   ├── database.py                       # Módulo de conexão e carga final no PostgreSQL
+│   ├── ingestion_receitafederal.py       # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
+│   ├── load_raw.py                       # Carrega arquivos CSV para a camada (Camada Raw)
+│   ├── main.py                           # Orquestrador principal do Pipeline
+│   ├── show_deltagold.py                 # (Utilitário) Exibe dados da camada Gold
+│   ├── show_deltaraw.py                  # (Utilitário) Exibe dados da camada Raw
+│   ├── show_deltasilver.py               # (Utilitário) Exibe dados da camada Silver
+│   └── transform_silver.py               # Aplica transformações e limpeza (Camada Silver)
+├── .gitignore                            # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
+├── Dockerfile                            # Define a imagem do ambiente Spark/Python
+├── docker-compose.yml                    # Orquestra os serviços (PostgreSQL e Spark)
+├── requirements.txt                      # Lista de dependências Python
+└── README.md                             # Documentação principal do projeto
+
+4 - Como executar o programa
+
+Para que os comandos, via terminal, abaixo sejam executados é necessário ter instalado os seguintes programas: git e docker, este último precisa estar em execução antes que o programa seja iniciado.
+
+ - Clone o reprositório:
+    git clone https://github.com/thais6g/Challenge-Data-Engineer.git
+ - Navegue até o diretório:
+    cd Challenge-Data-Engineer
+ - Inicie o programa:
+    docker-compose up --build
+
+Este último comando é o responsável por montar a imagem docker, instalar e iniciar cada configuração necessária para a execuçãodo programa.
+O início da execução pode demorar devido ao processo de download dos arquivos via endpoint.
+
+5 - Teste e Visualização (Acesso ao Banco de Dados)
+Há duas opções viáveis para a validação da execução bem sucedida do programa:
+
+* Consulta no diretório de arquivos do seu computador.
+    Cada etapa do programa gera inputs que são armazenados de acordo com a sua camada. Navegue até a pasta do seu usuário procure a pasta 'Challenge-Data-Engineer', dentro desta pasta estão todos os arquivos que foram clonados do git e após a a execução bem sucedida do programa a pasta 'data' conterá os arquivos e tabelas ingeridos e carregados neste programa.
+
+* Consulta da tabela no banco de dados 
+    Nessa validação pode-se ser usado o pgAdmin ou o DBeaver. Para isso considere os seguintes dados:
+
+Configuração	Detalhe
+Host:	        localhost
+Porta:	        5432
+Banco de Dados:	recfederal_db
+Usuário:	    admin
+Senha:      	admin123
 
 
-3. Acompanhe os logs
-- O pipeline será executado automaticamente via main.py
-- A tabela final será carregada no banco desafio_db no PostgreSQL
+5 - Tecnologias Utilizadas
+Linguagem: Python 3.11.5
 
-🧪 Teste e Visualização
-- Acesse o PostgreSQL via pgAdmin ou DBeaver:
-- Host: localhost
-- Porta: 5432
-- Usuário: admin
-- Senha: admin123
-- Banco: desafio_db
+Virtualização: Docker e Docker Compose.
 
-📌 Requisitos
-- Docker e Docker Compose instalados
-- Python 3.9+
-- Spark com suporte a Delta Lake
-- PostgreSQL JDBC Driver (.jar)
+Processamento:  PySpark.
+
+Banco de Dados: PostgreSQL.
+
+6 - Evidência do processamento
+
+Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.
+![alt text](image.png)
+
+Amostragem - Socios Raw
+![alt text](image.png)
+
+Amostragem - Empresas Raw
+![alt text](image.png)
+
+Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.
+![alt text](image.png)
+
+Camada gold - entrega analítica, com visão final do negócio
+![alt text](image.png)
+
+Exemplo de análises - Gold
+![alt text](image.png)
+
+![alt text](image.png)
+
+

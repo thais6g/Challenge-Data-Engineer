@@ -34,14 +34,14 @@ def show_deltasilver():
     # Loop para leitura e exibição
     for tabela in tabelas:
         caminho = f"{base_path}/{tabela}"
-        print(f"\n🔍 Lendo tabela Delta: {tabela}")
+        print(f"\nLendo tabela Delta: {tabela}")
         try:
             df = spark.read.format("delta").load(caminho)
-            print(f"✅ Tabela '{tabela}' lida com sucesso. Total de registros: {df.count()}")
+            print(f"Tabela '{tabela}' lida com sucesso. Total de registros: {df.count()}")
             df.printSchema()
             df.show(5, truncate=False)
         except Exception as e:
-            print(f"❌ Erro ao ler tabela '{tabela}': {e}")
+            print(f"Erro ao ler tabela '{tabela}': {e}")
 
 if __name__ == "__main__":
     show_deltasilver()
