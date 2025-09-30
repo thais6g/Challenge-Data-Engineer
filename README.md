@@ -27,28 +27,7 @@ Golde - Dado agregado
 
 3 - Estrtutura do programa
 
-Challenge-Data-Engineer/
-├── data/                                 # Camadas do Data Lake (Ignorado pelo .gitignore)
-│   ├── bronze/                           # Dados brutos após extração (sem limpeza)
-│   ├── raw/                              # Arquivos CSV brutos (Origem)
-│   ├── silver/                           # Dados limpos e padronizados
-│   └── gold/                             # Dados agregados e prontos para análise
-├── src/                                  # Código-fonte e módulos de processamento
-│   ├── __init__.py                       # Inicializa 'src' como um pacote Python
-│   ├── agg_gold.py                       # Agregações e criação da tabela final (Camada Gold)
-│   ├── database.py                       # Módulo de conexão e carga final no PostgreSQL
-│   ├── ingestion_receitafederal.py       # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
-│   ├── load_raw.py                       # Carrega arquivos CSV para a camada (Camada Raw)
-│   ├── main.py                           # Orquestrador principal do Pipeline
-│   ├── show_deltagold.py                 # (Utilitário) Exibe dados da camada Gold
-│   ├── show_deltaraw.py                  # (Utilitário) Exibe dados da camada Raw
-│   ├── show_deltasilver.py               # (Utilitário) Exibe dados da camada Silver
-│   └── transform_silver.py               # Aplica transformações e limpeza (Camada Silver)
-├── .gitignore                            # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
-├── Dockerfile                            # Define a imagem do ambiente Spark/Python
-├── docker-compose.yml                    # Orquestra os serviços (PostgreSQL e Spark)
-├── requirements.txt                      # Lista de dependências Python
-└── README.md                             # Documentação principal do projeto
+![alt text](image.png)
 
 4 - Como executar o programa
 
