@@ -1,57 +1,59 @@
-Desafio - Receita Federal do Brasil
+### Desafio - Receita Federal do Brasil
 
-1 - Objetivo
+### 1 - Objetivo
 O objetivo deste desafio é ingerir , via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requsitos das áreas de negócio.
 
-2 - Arquitetura de dados
+### 2 - Arquitetura de dados
 Este projeto foi construído considerando a arquitetura medalhão, de forma que seja possível garantir performance, qualidade e governança dos dados processados. Após a ingestão dos dados disponibilizados, os mesmos foram salvo em formato Delta lake a fim de garantir atomicidade na escrita e eliminação de dados corrompidos ou inconsistentes (garantia ACID), integridade, possibilidade de 'viagem no tempo' ,permitido com histórico de versão dos dados, além de melhorar a performance e permitir indexação.
 
 Segue a relação da estrutura de camadas utilizadas neste projeto:
 
-Dados brutos - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
+**Dados brutos** - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
 
-Bronze - Arquivo bruto, mesmo formato do endpoint
+*Bronze* - Arquivo bruto, mesmo formato do endpoint
 {data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal
 {data/bronze/extraction}: Extração do conteúdo dos arquivos ZIP
 
-Raw - Dado bruto. Estrutura definida e formato otimizado 
+*Raw* - Dado bruto. Estrutura definida e formato otimizado 
 {data/raw}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/bronze/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
 
-Dados refinados - Camada responsável por entregar objetos de dados de acordo com os requisitos solicitados pelo solicitante.
+**Dados refinados** - Camada responsável por entregar objetos de dados de acordo com os requisitos solicitados pelo solicitante.
 
-Silver - Dado refinado para atender o objetivo do projeto
+*Silver* - Dado refinado para atender o objetivo do projeto
 {data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
 
-Golde - Dado agregado
+*Gold* - Dado agregado
 {data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica e que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
 
-3 - Estrtutura do programa
+### 3 - Estrtutura do programa
 
-└── Challenge-Data-Engineer/<br>
-    ├── data/         # Camadas do Data Lake <br>
-    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)<br>
-    │   ├── raw/      # Arquivos CSV brutos (Origem)<br>
-    │   ├── silver/   # Dados limpos e padronizados<br>
-    │   └── gold/     # Dados agregados e prontos para análise<br>
-    ├── src/          # Código-fonte e módulos de processamento<br>
-    │   ├── __init__.py                  # Inicializa 'src' como um pacote Python <br> 
-    │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)<br>
-    │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL<br>
-    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)<br>
-    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)<br>
-    │   ├── main.py                      # Orquestrador principal do Pipeline<br>
-    │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold<br>
-    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw<br>
-    │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver<br>
-    │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)<br>
-    ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)<br>
-    ├── Dockerfile                       # Define a imagem do ambiente Spark/Python<br>
-    ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)<br>
-    ├── requirements.txt                 # Lista de dependências Python<br>
-    └── README.md                        # Documentação principal do projeto<br>
-                                         
+'''
+.
+└── Challenge-Data-Engineer/
+    ├── data/         # Camadas do Data Lake 
+    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)
+    │   ├── raw/      # Arquivos CSV brutos (Origem)
+    │   ├── silver/   # Dados limpos e padronizados
+    │   └── gold/     # Dados agregados e prontos para análise
+    ├── src/          # Código-fonte e módulos de processamento
+    │   ├── __init__.py                  # Inicializa 'src' como um pacote Python 
+    │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
+    │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL
+    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
+    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)
+    │   ├── main.py                      # Orquestrador principal do Pipeline
+    │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold
+    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw
+    │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver
+    │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)
+    ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
+    ├── Dockerfile                       # Define a imagem do ambiente Spark/Python
+    ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)
+    ├── requirements.txt                 # Lista de dependências Python
+    └── README.md                        # Documentação principal do projeto
+    '''                                   
 
-4 - Como executar o programa
+### 4 - Como executar o programa
 
 Para que os comandos, via terminal, abaixo sejam executados é necessário ter instalado os seguintes programas: git e docker, este último precisa estar em execução antes que o programa seja iniciado.
 
@@ -65,7 +67,7 @@ Para que os comandos, via terminal, abaixo sejam executados é necessário ter i
 Este último comando é o responsável por montar a imagem docker, instalar e iniciar cada configuração necessária para a execuçãodo programa.
 O início da execução pode demorar devido ao processo de download dos arquivos via endpoint.
 
-5 - Teste e Visualização (Acesso ao Banco de Dados)
+### 5 - Teste e Visualização (Acesso ao Banco de Dados)
 Há duas opções viáveis para a validação da execução bem sucedida do programa:
 
 * Consulta no diretório de arquivos do seu computador.
@@ -82,7 +84,7 @@ Usuário:	    admin
 Senha:      	admin123
 
 
-5 - Tecnologias Utilizadas
+### 6 - Tecnologias Utilizadas
 Linguagem: Python 3.11.5
 
 Virtualização: Docker e Docker Compose.
@@ -91,7 +93,7 @@ Processamento:  PySpark.
 
 Banco de Dados: PostgreSQL.
 
-6 - Evidência do processamento<br>
+### 7 - Evidência do processamento<br>
 
 Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.<br>
 ![alt text](img_iniciodesafio.png)
@@ -120,8 +122,6 @@ Carga no bando de dados - Postgre<br>
 
 ![alt text](img_cargabd.png)<br>
 
-Consulta da tabela o pgAdmin
+Consulta da tabela no pgAdmin
 
 ![alt text](img_pgadmin.png)
-
---falta imagem da carga no postgre e o select no postgre e ultima anl da gold, mas em azul kkkkk
