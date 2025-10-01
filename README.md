@@ -27,7 +27,30 @@ Golde - Dado agregado
 
 3 - Estrtutura do programa
 
-![alt text](img_estruturaprg.png)
+.
+└── Challenge-Data-Engineer/
+    ├── data/         # Camadas do Data Lake 
+    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)
+    │   ├── raw/      # Arquivos CSV brutos (Origem)
+    │   ├── silver/   # Dados limpos e padronizados
+    │   └── gold/     # Dados agregados e prontos para análise
+    ├── src/          # Código-fonte e módulos de processamento
+    │   ├── __init__.py                  # Inicializa 'src' como um pacote Python  
+    │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
+    │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL
+    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
+    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)
+    │   ├── main.py                      # Orquestrador principal do Pipeline
+    │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold
+    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw
+    │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver
+    │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)
+    ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
+    ├── Dockerfile                       # Define a imagem do ambiente Spark/Python
+    ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)
+    ├── requirements.txt                 # Lista de dependências Python
+    └── README.md                        # Documentação principal do projeto
+                                         
 
 4 - Como executar o programa
 
@@ -69,26 +92,37 @@ Processamento:  PySpark.
 
 Banco de Dados: PostgreSQL.
 
-6 - Evidência do processamento
+6 - Evidência do processamento<br>
 
-Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.
+Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.<br>
 ![alt text](img_iniciodesafio.png)
 
-Amostragem - Socios Raw
+Amostragem - Socios Raw<br>
 ![alt text](img_amost_sociosraw.png)
 
-Amostragem - Empresas Raw
+Amostragem - Empresas Raw<br>
 ![alt text](img_amost_empraw.png)
 
-Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.
+Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.<br>
 ![alt text](img_silver.png)
 
-Camada gold - entrega analítica, com visão final do negócio
+Camada gold - entrega analítica, com visão final do negócio<br>
 ![alt text](img_gold.png)
 
-Exemplo de análises - Gold
-![alt text](img_exanl1.png)
+Exemplo de análises - Gold<br>
 
-![alt text](img_exanl2.png)
+![alt text](img_exanl1.png)<br>
 
+![alt text](img_exanl2.png)<br>
 
+![alt text](img_exanl3.png)<br>
+
+Carga no bando de dados - Postgre<br>
+
+![alt text](img_cargabd.png)<br>
+
+Consulta da tabela o pgAdmin
+
+![alt text](img_pgadmin.png)
+
+--falta imagem da carga no postgre e o select no postgre e ultima anl da gold, mas em azul kkkkk

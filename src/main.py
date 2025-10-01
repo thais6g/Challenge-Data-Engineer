@@ -45,6 +45,9 @@ def run_challenge():
     # --- Etapa 5: Carga da tabela final no banco de dados ---
     print("\n--- Carga da tabela final no PostgreSQL ---")
     load_postgres()
+
+    # --- Conclusão ---
+    print("\n--- Desafio concluído com sucesso!! ---")
     
 if __name__ == "__main__":
     run_challenge()
