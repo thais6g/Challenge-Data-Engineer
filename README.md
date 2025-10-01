@@ -11,7 +11,7 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 **Dados brutos** - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
 
 *Bronze* - Arquivo bruto, mesmo formato do endpoint<br>
-{data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal
+{data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal<br>
 {data/bronze/extraction}: Extração do conteúdo dos arquivos ZIP
 
 *Raw* - Dado bruto. Estrutura definida e formato otimizado <br>
