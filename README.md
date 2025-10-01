@@ -19,13 +19,13 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 
 - **Fonte dos metadados:** [Receita Federal - Metadados CNPJ](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf)
 
-**Dados refinados** - Camada responsável por entregar objetos de dados de acordo com os requisitos solicitados pelo solicitante.
+**Dados refinados** - Camada responsável por entregar objetos de dados de acordo com os requisitos da área de negócio.
 
 *Silver* - Dado refinado para atender o objetivo do projeto<br>
 {data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
 
 *Gold* - Dado agregado<br>
-{data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica e que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
+{data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
 
 ### 3 - Estrutura do programa
 
@@ -33,10 +33,10 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 .
 └── Challenge-Data-Engineer/
     ├── data/         # Modelo medalhão 
-    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)
-    │   ├── raw/      # Arquivos CSV brutos (Origem)
-    │   ├── silver/   # Dados limpos e padronizados
-    │   └── gold/     # Dados agregados e prontos para análise
+    │   ├── bronze/   # Arquivos CSV 
+    │   ├── raw/      # Dados brutos (Delta)
+    │   ├── silver/   # Dados limpos e padronizados (Delta)
+    │   └── gold/     # Dados agregados e prontos para análise (Delta)
     ├── src/          # Código-fonte e módulos de processamento
     │   ├── __init__.py                  # Inicializa 'src' como um pacote Python 
     │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
