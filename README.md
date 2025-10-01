@@ -27,29 +27,28 @@ Golde - Dado agregado
 
 3 - Estrtutura do programa
 
-.
-└── Challenge-Data-Engineer/
-    ├── data/         # Camadas do Data Lake 
-    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)
-    │   ├── raw/      # Arquivos CSV brutos (Origem)
-    │   ├── silver/   # Dados limpos e padronizados
-    │   └── gold/     # Dados agregados e prontos para análise
-    ├── src/          # Código-fonte e módulos de processamento
-    │   ├── __init__.py                  # Inicializa 'src' como um pacote Python  
-    │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
-    │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL
-    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
-    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)
-    │   ├── main.py                      # Orquestrador principal do Pipeline
-    │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold
-    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw
-    │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver
-    │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)
-    ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
-    ├── Dockerfile                       # Define a imagem do ambiente Spark/Python
-    ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)
-    ├── requirements.txt                 # Lista de dependências Python
-    └── README.md                        # Documentação principal do projeto
+└── Challenge-Data-Engineer/<br>
+    ├── data/         # Camadas do Data Lake <br>
+    │   ├── bronze/   # Dados brutos após extração (Sem limpeza)<br>
+    │   ├── raw/      # Arquivos CSV brutos (Origem)<br>
+    │   ├── silver/   # Dados limpos e padronizados<br>
+    │   └── gold/     # Dados agregados e prontos para análise<br>
+    ├── src/          # Código-fonte e módulos de processamento<br>
+    │   ├── __init__.py                  # Inicializa 'src' como um pacote Python <br> 
+    │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)<br>
+    │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL<br>
+    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)<br>
+    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)<br>
+    │   ├── main.py                      # Orquestrador principal do Pipeline<br>
+    │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold<br>
+    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw<br>
+    │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver<br>
+    │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)<br>
+    ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)<br>
+    ├── Dockerfile                       # Define a imagem do ambiente Spark/Python<br>
+    ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)<br>
+    ├── requirements.txt                 # Lista de dependências Python<br>
+    └── README.md                        # Documentação principal do projeto<br>
                                          
 
 4 - Como executar o programa
