@@ -1,31 +1,33 @@
 ### Desafio - Receita Federal do Brasil
 
 ### 1 - Objetivo
-O objetivo deste desafio é ingerir , via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requsitos das áreas de negócio.
+O objetivo deste desafio é ingerir, via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requsitos das áreas de negócio.
 
 ### 2 - Arquitetura de dados
-Este projeto foi construído considerando a arquitetura medalhão, de forma que seja possível garantir performance, qualidade e governança dos dados processados. Após a ingestão dos dados disponibilizados, os mesmos foram salvo em formato Delta lake a fim de garantir atomicidade na escrita e eliminação de dados corrompidos ou inconsistentes (garantia ACID), integridade, possibilidade de 'viagem no tempo' ,permitido com histórico de versão dos dados, além de melhorar a performance e permitir indexação.
+Este projeto foi construído considerando a arquitetura medalhão, de forma que seja possível garantir performance, qualidade e governança dos dados processados. Após a ingestão dos dados disponibilizados, os mesmos foram salvos em formato Delta lake a fim de garantir atomicidade na escrita e eliminação de dados corrompidos ou inconsistentes (garantia ACID), integridade, possibilidade de 'viagem no tempo', permitido com o histórico de versão dos dados, além de melhorar a performance e permitir indexação.
 
 Segue a relação da estrutura de camadas utilizadas neste projeto:
 
 **Dados brutos** - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
 
-*Bronze* - Arquivo bruto, mesmo formato do endpoint
+*Bronze* - Arquivo bruto, mesmo formato do endpoint<br>
 {data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal
 {data/bronze/extraction}: Extração do conteúdo dos arquivos ZIP
 
-*Raw* - Dado bruto. Estrutura definida e formato otimizado 
+*Raw* - Dado bruto. Estrutura definida e formato otimizado <br>
 {data/raw}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/bronze/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
+
+- **Fonte dos metadados:** [Receita Federal - Metadados CNPJ](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf)
 
 **Dados refinados** - Camada responsável por entregar objetos de dados de acordo com os requisitos solicitados pelo solicitante.
 
-*Silver* - Dado refinado para atender o objetivo do projeto
+*Silver* - Dado refinado para atender o objetivo do projeto<br>
 {data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
 
-*Gold* - Dado agregado
+*Gold* - Dado agregado<br>
 {data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica e que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
 
-### 3 - Estrtutura do programa
+### 3 - Estrutura do programa
 
 ```
 .
