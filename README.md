@@ -30,7 +30,7 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 ```
 .
 └── Challenge-Data-Engineer/
-    ├── data/         # Camadas do Data Lake 
+    ├── data/         # Modelo medalhão 
     │   ├── bronze/   # Dados brutos após extração (Sem limpeza)
     │   ├── raw/      # Arquivos CSV brutos (Origem)
     │   ├── silver/   # Dados limpos e padronizados
