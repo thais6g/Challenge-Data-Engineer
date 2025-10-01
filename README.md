@@ -110,7 +110,7 @@ Camada gold - entrega analítica, com visão final do negócio<br>
 
 Exemplo de análises - Gold<br>
 
-![alt text](img_exanl1.png)<br>
+![alt text](img_exanl1.png)
 
 ![alt text](img_exanl2.png)<br>
 
