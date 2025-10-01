@@ -27,7 +27,7 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 
 ### 3 - Estrtutura do programa
 
-'''
+```
 .
 └── Challenge-Data-Engineer/
     ├── data/         # Camadas do Data Lake 
@@ -51,7 +51,8 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
     ├── docker-compose.yml               # Orquestra os serviços (PostgreSQL e Spark)
     ├── requirements.txt                 # Lista de dependências Python
     └── README.md                        # Documentação principal do projeto
-    '''                                   
+```
+                                  
 
 ### 4 - Como executar o programa
 
