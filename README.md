@@ -10,21 +10,21 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 
 **Dados brutos** - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
 
-*Landed* - Arquivo bruto, mesmo formato do endpoint<br>
+- *Landed* - Arquivo bruto, mesmo formato do endpoint<br>
 {data/landed/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal<br>
 {data/landed/extraction}: Extração do conteúdo dos arquivos ZIP
 
-*Bronze* - Dado bruto. Estrutura definida e formato otimizado <br>
+- *Bronze* - Dado bruto. Estrutura definida e formato otimizado <br>
 {data/bronze}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/landed/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
 
 - **Fonte dos metadados:** [Receita Federal - Metadados CNPJ](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf)
 
 **Dados refinados** - Camada responsável por entregar objetos de dados de acordo com os requisitos da área de negócio.
 
-*Silver* - Dado refinado para atender o objetivo do projeto<br>
+- *Silver* - Dado refinado para atender o objetivo do projeto<br>
 {data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
 
-*Gold* - Dado agregado<br>
+- *Gold* - Dado agregado<br>
 {data/gold}: Neste momento o dado refinado é utilizado para criar uma visão analítica que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
 
 ### 3 - Estrutura do programa
@@ -73,38 +73,39 @@ O início da execução pode demorar devido ao processo de download dos arquivos
 ### 5 - Teste e Visualização (Acesso ao Banco de Dados)
 Há duas opções viáveis para a validação da execução bem sucedida do programa:
 
-* Consulta no diretório de arquivos do seu computador.
+* Consulta no diretório de arquivos do seu computador.<br>
     Cada etapa do programa gera inputs que são armazenados de acordo com a sua camada. Navegue até a pasta do seu usuário procure a pasta 'Challenge-Data-Engineer', dentro desta pasta estão todos os arquivos que foram clonados do git e após a a execução bem sucedida do programa a pasta 'data' conterá os arquivos e tabelas ingeridos e carregados neste programa.
 
-* Consulta da tabela no banco de dados 
+* Consulta da tabela no banco de dados <br>
     Nessa validação pode-se ser usado o pgAdmin ou o DBeaver. Para isso considere os seguintes dados:
 
-Configuração	Detalhe
-Host:	        localhost
-Porta:	        5432
-Banco de Dados:	recfederal_db
-Usuário:	    admin
-Senha:      	admin123
+    | Configuração | Detalhe |
+    | :--- | :--- |
+    | Host: | localhost |
+    | Porta: | 5432 |
+    | Banco de Dados: | recfederal_db |
+    | Usuário: | admin |
+    | Senha: | admin123 |
 
 
 ### 6 - Tecnologias Utilizadas
-Linguagem: Python 3.11.5
+     Linguagem: Python 3.11.5
 
-Virtualização: Docker e Docker Compose.
+     Virtualização: Docker e Docker Compose.
 
-Processamento:  PySpark.
+     Processamento:  PySpark.
 
-Banco de Dados: PostgreSQL.
+     Banco de Dados: PostgreSQL.
 
 ### 7 - Evidência do processamento<br>
 
-Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada landed e carga em delta na camada raw.<br>
+Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada landed e carga em delta na camada bronze.<br>
 ![alt text](img_iniciodesafio.png)
 
-Amostragem - Socios Raw<br>
+Amostragem - Socios Bronze<br>
 ![alt text](img_amost_sociosraw.png)
 
-Amostragem - Empresas Raw<br>
+Amostragem - Empresas Bronze<br>
 ![alt text](img_amost_empraw.png)
 
 Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.<br>
