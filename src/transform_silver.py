@@ -35,7 +35,7 @@ def transform_silver(origem="data/raw", destino="data/silver"):
 
     try:
         #Criação das tabelas na camada silver respeitando o schema solicitado
-        df_empresas = spark.read.format("delta").load(os.path.join(origem, "empresas"))
+        df_empresas = spark.read.format("delta").load(os.path.join(origem, "Empresas"))
         df_empresas.select(
             col('CNPJ_BASICO').alias('cnpj'),
             col('RAZAO_SOCIAL_NOME_EMPRESARIAL').alias('razao_social'),
@@ -49,7 +49,7 @@ def transform_silver(origem="data/raw", destino="data/silver"):
         print(f"Erro ao transformar EMPRESAS: {e}")
 
     try:
-        df_socios = spark.read.format("delta").load(os.path.join(origem, "socios"))
+        df_socios = spark.read.format("delta").load(os.path.join(origem, "Socios"))
         df_socios.select(
             col('CNPJ_BASICO').alias('cnpj'),
             col('IDENTIFICADOR_DE_SOCIO').alias('tipo_socio'),
