@@ -10,12 +10,12 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 
 **Dados brutos** - Camada responsável por recepcionar os dados obtidos após ingestão via endpoint.
 
-*Bronze* - Arquivo bruto, mesmo formato do endpoint<br>
-{data/bronze/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal<br>
-{data/bronze/extraction}: Extração do conteúdo dos arquivos ZIP
+*Landed* - Arquivo bruto, mesmo formato do endpoint<br>
+{data/landed/zip}: Primeira recepção dos arquivos ZIP extraídos da Receita Federal<br>
+{data/landed/extraction}: Extração do conteúdo dos arquivos ZIP
 
-*Raw* - Dado bruto. Estrutura definida e formato otimizado <br>
-{data/raw}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/bronze/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
+*Bronze* - Dado bruto. Estrutura definida e formato otimizado <br>
+{data/bronze}: Ingestão dos arquivos, que anteriormente foram extraídos e armazenados em data/landed/extraction, definição de esquema (com base nos metadados disponibilizados pela Receita Federal) e carga em delta.
 
 - **Fonte dos metadados:** [Receita Federal - Metadados CNPJ](https://www.gov.br/receitafederal/dados/cnpj-metadados.pdf)
 
@@ -25,7 +25,7 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 {data/silver}: Ingestão dos dados brutos, neste momento já armazenados em delta, e criação de novas tabelas delta com a aplicação de esquema que respeite os requisitos da área de negócio.
 
 *Gold* - Dado agregado<br>
-{data/gold}: Neste o momento o dado refinado é utilizado para criar uma visão analítica que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
+{data/gold}: Neste momento o dado refinado é utilizado para criar uma visão analítica que possa auxiliar a tomada de decisão, isso com base em flags e campos agregados.
 
 ### 3 - Estrutura do programa
 
@@ -33,15 +33,15 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
 .
 └── Challenge-Data-Engineer/
     ├── data/         # Modelo medalhão 
-    │   ├── bronze/   # Arquivos CSV 
-    │   ├── raw/      # Dados brutos (Delta)
+    │   ├── landed/   # Arquivos CSV 
+    │   ├── bronze/   # Dados brutos (Delta)
     │   ├── silver/   # Dados limpos e padronizados (Delta)
     │   └── gold/     # Dados agregados e prontos para análise (Delta)
     ├── src/          # Código-fonte e módulos de processamento
     │   ├── __init__.py                  # Inicializa 'src' como um pacote Python 
     │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
     │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL
-    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada Bronze)
+    │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada landed)
     │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)
     │   ├── main.py                      # Orquestrador principal do Pipeline
     │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold
@@ -67,7 +67,7 @@ Para que os comandos, via terminal, abaixo sejam executados é necessário ter i
  - Inicie o programa:
     docker-compose up --build
 
-Este último comando é o responsável por montar a imagem docker, instalar e iniciar cada configuração necessária para a execuçãodo programa.
+Este último comando é o responsável por montar a imagem docker, instalar e iniciar cada configuração necessária para a execução do programa.
 O início da execução pode demorar devido ao processo de download dos arquivos via endpoint.
 
 ### 5 - Teste e Visualização (Acesso ao Banco de Dados)
@@ -98,7 +98,7 @@ Banco de Dados: PostgreSQL.
 
 ### 7 - Evidência do processamento<br>
 
-Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada bronze e carga em delta na camada raw.<br>
+Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada landed e carga em delta na camada raw.<br>
 ![alt text](img_iniciodesafio.png)
 
 Amostragem - Socios Raw<br>

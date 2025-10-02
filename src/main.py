@@ -1,7 +1,7 @@
 # Importa as funções de cada etapa (utilizando importação absoluta)
 from src.ingestion_receitafederal import download_and_extract_zips
-from src.load_raw import load_raw
-from src.show_deltaraw import show_deltaraw
+from src.load_bronze import load_bronze
+from src.show_deltabronze import show_deltabronze
 from src.transform_silver import transform_silver
 from src.show_deltasilver import show_deltasilver
 from src.agg_gold import builder_gold
@@ -12,17 +12,17 @@ def run_challenge():
     """Função principal que orquestra o fluxo completo do desafio."""
     print("Iniciando o desafio de Engenharia de Dados - Modelo Medalhão...")
     
-    # --- Etapa 1: Extração dos arquivos da receita Federal (Camada BRONZE) ---
-    print("\n--- Etapa 1: Extração dos arquivos da Receita Federal (Camada BRONZE) ---")
-    download_and_extract_zips()
+    # --- Etapa 1: Extração dos arquivos da receita Federal (Camada LANDED) ---
+    print("\n--- Etapa 1: Extração dos arquivos da Receita Federal (Camada LANDED) ---")
+    #download_and_extract_zips()
 
-    # --- Etapa 2: Leitura e Carregamento para Delta (Camada RAW) ---
-    print("\n--- Etapa 2: Carregamento para Camada RAW (Delta Lake) ---")
-    load_raw()
+    # --- Etapa 2: Leitura e Carregamento para Delta (Camada BRONZE) ---
+    print("\n--- Etapa 2: Carregamento para Camada BRONZE (Delta Lake) ---")
+    #load_bronze()
 
     #Amostragem das tabelas
-    print("\n--- Amostragem das tabelas - RAW ---")
-    show_deltaraw()
+    print("\n--- Amostragem das tabelas - BRONZE ---")
+    show_deltabronze()
 
     print("\n--- Etapa BRONZE concluída com sucesso! ---")
 

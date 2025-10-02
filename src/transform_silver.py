@@ -23,7 +23,7 @@ builder = SparkSession.builder \
 spark = builder.getOrCreate()
 spark.sparkContext.setLogLevel("ERROR")
 
-def transform_silver(origem="data/raw", destino="data/silver"):
+def transform_silver(origem="data/bronze", destino="data/silver"):
     """
     Leitura das tabelas presentes na camada Raw. 
     Definição de schema, rename de coluna e atualização de tipo de dado.

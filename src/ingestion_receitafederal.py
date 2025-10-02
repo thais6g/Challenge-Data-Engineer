@@ -5,9 +5,9 @@ import io
 from tqdm.auto import tqdm # Importa a biblioteca de progresso
 
 # Diretório para os arquivos ZIP
-DOWNLOAD_DIR = "data/bronze/zip"
+DOWNLOAD_DIR = "data/landed/zip"
 #Diretório para os arquivos extraídos
-EXTRACTION_DIR = "data/bronze/extraction"
+EXTRACTION_DIR = "data/landed/extraction"
 
 URLS = {
     #URLs obtidas a partir do site da Receita Federal
@@ -16,7 +16,7 @@ URLS = {
 }
 
 def setup_directories():
-    """Cria os diretórios necessários (data/bronze/zip e data/bronze/extraction)."""
+    """Cria os diretórios necessários (data/landed/zip e data/landed/extraction)."""
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     os.makedirs(EXTRACTION_DIR, exist_ok=True)
     print(f"Diretórios configurados: {DOWNLOAD_DIR} e {EXTRACTION_DIR}")

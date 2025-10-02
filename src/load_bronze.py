@@ -14,7 +14,7 @@ DELTA_CATALOG = "org.apache.spark.sql.delta.catalog.DeltaCatalog"
 # Variável global para armazenar a SparkSession após a criação
 spark = None
 
-# --- 1. DEFINIÇÃO DE SCHEMAS FIXOS (Todos StringType para a Camada BRONZE) ---
+# --- 1. DEFINIÇÃO DE SCHEMAS FIXOS (Todos StringType para a Camada bronze) ---
 # Os nomes das colunas devem corresponder EXATAMENTE à ordem dos campos do arquivo ingerido e para isso foi consultado o metadado disponibilizado pela Receita Federal.
 schema_socio = StructType([
     StructField("CNPJ_BASICO", StringType(), True),
@@ -46,7 +46,7 @@ def get_spark_session():
     global spark
     if spark is None:
         builder = SparkSession.builder \
-            .appName("RawLoader") \
+            .appName("BronzeLoader") \
             .config("spark.jars.packages", DELTA_PACKAGES) \
             .config("spark.sql.extensions", DELTA_EXTENSIONS) \
             .config("spark.sql.catalog.spark_catalog", DELTA_CATALOG) \
@@ -64,9 +64,9 @@ def get_spark_session():
     return spark
 
 
-def load_raw(origem="data/bronze/extraction", destino="data/raw"):
+def load_bronze(origem="data/landed/extraction", destino="data/bronze"):
     """
-    Lê os arquivos CSV extraídos, camada Bronze, aplica o schema StringType e salva como tabela Delta na camada Raw.
+    Lê os arquivos CSV extraídos, camada landed, aplica o schema StringType e salva como tabela Delta na camada bronze.
     """
     spark = get_spark_session() # Inicializa o Spark AQUI!
 
@@ -116,4 +116,4 @@ def load_raw(origem="data/bronze/extraction", destino="data/raw"):
             
 # Se for executado diretamente, inicializa o Spark e tenta rodar (útil para testes)
 if __name__ == "__main__":
-    load_raw()
+    load_bronze()

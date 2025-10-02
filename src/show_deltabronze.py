@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-def show_deltaraw():
+def show_deltabronze():
     """Valida a leitura das tabelas Delta na camada BRONZE."""
     
     # --- CONFIGURAÇÕES DE DEPENDÊNCIA ---
@@ -12,7 +12,7 @@ def show_deltaraw():
 
     # Inicializa Spark com suporte ao Delta Lake
     spark = SparkSession.builder \
-        .appName("ValidationDeltaRaw") \
+        .appName("ValidationDeltaBronze") \
         .config("spark.jars.packages", DELTA_PACKAGES) \
         .config("spark.sql.extensions", DELTA_EXTENSIONS) \
         .config("spark.sql.catalog.spark_catalog", DELTA_CATALOG) \
@@ -29,7 +29,7 @@ def show_deltaraw():
     ]
 
     # Caminho base onde as tabelas foram salvas
-    base_path = "data/raw"
+    base_path = "data/bronze"
 
     # Loop para leitura e exibição
     for tabela in tabelas:
@@ -44,4 +44,4 @@ def show_deltaraw():
             print(f"Erro ao ler tabela '{tabela}': {e}")
 
 if __name__ == "__main__":
-    show_deltaraw()
+    show_deltabronze()
