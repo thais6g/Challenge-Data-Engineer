@@ -116,6 +116,7 @@ Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos
 ![alt text](img_silver.png)
 
 Camada gold - entrega analítica, com visão final do negócio<br>
+
 ![alt text](img_gold.png)
 
 Exemplo de análises - Gold<br>
