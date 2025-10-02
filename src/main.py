@@ -14,11 +14,11 @@ def run_challenge():
     
     # --- Etapa 1: Extração dos arquivos da receita Federal (Camada LANDED) ---
     print("\n--- Etapa 1: Extração dos arquivos da Receita Federal (Camada LANDED) ---")
-    #download_and_extract_zips()
+    download_and_extract_zips()
 
     # --- Etapa 2: Leitura e Carregamento para Delta (Camada BRONZE) ---
     print("\n--- Etapa 2: Carregamento para Camada BRONZE (Delta Lake) ---")
-    #load_bronze()
+    load_bronze()
 
     #Amostragem das tabelas
     print("\n--- Amostragem das tabelas - BRONZE ---")
