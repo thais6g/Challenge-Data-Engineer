@@ -43,7 +43,7 @@ def run_challenge():
     show_deltagold()
 
     # --- Etapa 5: Carga da tabela final no banco de dados ---
-    print("\n--- Carga da tabela final no PostgreSQL ---")
+    print("\n--- Etapa 5: Carga da tabela final no PostgreSQL ---")
     load_postgres()
 
     # --- Conclusão ---

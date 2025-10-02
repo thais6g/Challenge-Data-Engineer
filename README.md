@@ -1,7 +1,7 @@
 ### Desafio - Receita Federal do Brasil
 
 ### 1 - Objetivo
-O objetivo deste desafio é ingerir, via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requsitos das áreas de negócio.
+O objetivo deste desafio é ingerir, via endpoint, e processar dados abertos sobre empresas brasileiras disponibilizados pela Receita Federal, dados estes que podem sofrer uma defasagem de até três meses, de forma que seja possível atender os requisitos das áreas de negócio.
 
 ### 2 - Arquitetura de dados
 Este projeto foi construído considerando a arquitetura medalhão, de forma que seja possível garantir performance, qualidade e governança dos dados processados. Após a ingestão dos dados disponibilizados, os mesmos foram salvos em formato Delta lake a fim de garantir atomicidade na escrita e eliminação de dados corrompidos ou inconsistentes (garantia ACID), integridade, possibilidade de 'viagem no tempo', permitido com o histórico de versão dos dados, além de melhorar a performance e permitir indexação.
@@ -42,10 +42,10 @@ Segue a relação da estrutura de camadas utilizadas neste projeto:
     │   ├── agg_gold.py                  # Agregações e criação da tabela final (Camada Gold)
     │   ├── database.py                  # Módulo de conexão e carga final no PostgreSQL
     │   ├── ingestion_receitafederal.py  # Baixa e extrai os arquivos da Receita Federal (Camada landed)
-    │   ├── load_raw.py                  # Transforma arquivos CSV para Delta (Camada Raw)
+    │   ├── load_bronze.py               # Transforma arquivos CSV para Delta (Camada Bronze)
     │   ├── main.py                      # Orquestrador principal do Pipeline
     │   ├── show_deltagold.py            # (Utilitário) Exibe dados da camada Gold
-    │   ├── show_deltaraw.py             # (Utilitário) Exibe dados da camada Raw
+    │   ├── show_deltabronze.py          # (Utilitário) Exibe dados da camada Bronze
     │   ├── show_deltasilver.py          # (Utilitário) Exibe dados da camada Silver
     │   └── transform_silver.py          # Aplica transformações e limpeza (Camada Silver)
     ├── .gitignore                       # Regras de exclusão do Git (ignora /data, /__pycache__, etc.)
@@ -74,10 +74,10 @@ O início da execução pode demorar devido ao processo de download dos arquivos
 Há duas opções viáveis para a validação da execução bem sucedida do programa:
 
 * Consulta no diretório de arquivos do seu computador.<br>
-    Cada etapa do programa gera inputs que são armazenados de acordo com a sua camada. Navegue até a pasta do seu usuário procure a pasta 'Challenge-Data-Engineer', dentro desta pasta estão todos os arquivos que foram clonados do git e após a a execução bem sucedida do programa a pasta 'data' conterá os arquivos e tabelas ingeridos e carregados neste programa.
+    Cada etapa do programa gera outputs que são armazenados de acordo com a sua camada. Navegue até a pasta do seu usuário procure a pasta 'Challenge-Data-Engineer', dentro desta pasta estarão todos os arquivos que foram clonados do git e após a execução bem sucedida do programa a pasta 'data' conterá os arquivos ingeridos e tabelas criadas carregados neste programa.
 
 * Consulta da tabela no banco de dados <br>
-    Nessa validação pode-se ser usado o pgAdmin ou o DBeaver. Para isso considere os seguintes dados:
+    Nessa validação pode-se ser usado, por exemplo, o pgAdmin ou o DBeaver. Para isso considere os seguintes dados:
 
     | Configuração | Detalhe |
     | :--- | :--- |
@@ -100,15 +100,19 @@ Há duas opções viáveis para a validação da execução bem sucedida do prog
 ### 7 - Evidência do processamento<br>
 
 Iniciação da execução. Leitura dos arquivos ZIP e extração do conteúdo na camada landed e carga em delta na camada bronze.<br>
+
 ![alt text](img_iniciodesafio.png)
 
 Amostragem - Socios Bronze<br>
-![alt text](img_amost_sociosraw.png)
+
+![alt text](img_amost_sociosbronze.png)
 
 Amostragem - Empresas Bronze<br>
-![alt text](img_amost_empraw.png)
+
+![alt text](img_amost_emprbronze.png)
 
 Camada silver - refinamento do esquema, com as colunas requeridas e seus devidos tipos de dados.<br>
+
 ![alt text](img_silver.png)
 
 Camada gold - entrega analítica, com visão final do negócio<br>
@@ -116,13 +120,9 @@ Camada gold - entrega analítica, com visão final do negócio<br>
 
 Exemplo de análises - Gold<br>
 
-![alt text](img_exanl1.png)
+![alt text](img_exanl.png)
 
-![alt text](img_exanl2.png)<br>
-
-![alt text](img_exanl3.png)<br>
-
-Carga no bando de dados - Postgre<br>
+Carga no banco de dados - Postgre<br>
 
 ![alt text](img_cargabd.png)<br>
 
